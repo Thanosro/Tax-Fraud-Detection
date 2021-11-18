@@ -16,11 +16,16 @@ In the following scree plot, we present the variance of each principal component
 <img src="https://user-images.githubusercontent.com/39418469/142398202-c4fc59eb-d2c9-4717-be21-c244b16c45bb.png" width="450" height="300">
 
 #### Autoencoder
-Next, we used the reduced dimension dataset from the PCA as input to an autoencoder and we standardized it with zero mean and one standard deviation. The autoencoder had 3 layers and 5 nodes in the hidden layer, which performed the dimensionality reduction. The autoencoder reduces the dimenension of the dataset in the hidden layer and then reconstructs it in the output layer, thus offering noise reduction and outlier detection in the dataset. In the following figure we can observe the loss of the autoencoder for different number of nodes in the hidden layer.
+Next, we used the reduced dimension dataset from the PCA as input to an autoencoder and we standardized it with zero mean and one standard deviation. The autoencoder had 3 layers and 5 nodes in the hidden layer, which performed the dimensionality reduction. The autoencoder reduces the dimenension of the dataset in the hidden layer and then reconstructs it in the output layer, thus offering noise reduction and outlier detection in the dataset. In the following figure we can observe the loss of the autoencoder for different number of nodes in the hidden layer. 
 
 <img src="https://user-images.githubusercontent.com/39418469/142399855-f697f69e-090b-4148-b671-c28530fcb314.png" width="450" height="300">
 
 ### Evaluating the Results
-In this section we assign fraud scores at each record based on the outputs of the PCA and autoencoder to indicate a measure of fraud for each data entry. As our 1st score, we use the distance (2-norm) of each record after the PCA step from the origin. Any outliers in the original dataset would indicate high variance and PCA maximizes variance by projecting in the principal components. Hence, an outlier value in a dimension would be included in the dimensionality reduction performed by PCA and could be easily detected by a distance metric in the standardized dataset. If 
-$$a^2+b^2=c^2$$
+In this section we assign fraud scores at each record based on the outputs of the PCA and autoencoder to indicate a measure of fraud for each data entry. As our 1st score, we use the distance (2-norm) of each record after the PCA step from the origin. Any outliers in the original dataset would indicate high variance and PCA maximizes variance by projecting in the principal components. Hence, an outlier value in a dimension would be included in the dimensionality reduction performed by PCA and could be easily detected by a distance metric in the standardized dataset. If <img src="https://render.githubusercontent.com/render/math?math=P_z"> is the output dataset of PCA and <img src="https://render.githubusercontent.com/render/math?math=S_1"> is the first score, we have <img src="https://render.githubusercontent.com/render/math?math=S_1%20=%20||P_z||_2">.
+
+Our second score <img src="https://render.githubusercontent.com/render/math?math=S_2"> is derived from the output of the autoencoder and is the difference of the output <img src="https://render.githubusercontent.com/render/math?math=P_a"> to the input <img src="https://render.githubusercontent.com/render/math?math=P_z"> of the autoencoder: <img src="https://render.githubusercontent.com/render/math?math=S_2%20=%20||P_a-P_z||_2">. Finally, we combine the two scores either by either calculating their harmonic mean or their average to have a final outlier score. The final score is presented below:
+
+<img src="https://user-images.githubusercontent.com/39418469/142493148-a4a504f3-2bd3-4bb7-8466-f743bf57c033.png" width="450" height="300">
+
+
 
