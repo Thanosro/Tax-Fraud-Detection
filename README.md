@@ -20,14 +20,24 @@ Next, we used the reduced dimension dataset from the PCA as input to an autoenco
 
 <img src="https://user-images.githubusercontent.com/39418469/142399855-f697f69e-090b-4148-b671-c28530fcb314.png" width="450" height="300">
 
-### Evaluating the Results
+### Evaluation of the Results
 In this section we assign fraud scores at each record based on the outputs of the PCA and autoencoder to indicate a measure of fraud for each data entry. As our 1st score, we use the distance (2-norm) of each record after the PCA step from the origin. Any outliers in the original dataset would indicate high variance and PCA maximizes variance by projecting in the principal components. Hence, an outlier value in a dimension would be included in the dimensionality reduction performed by PCA and could be easily detected by a distance metric in the standardized dataset. If ![image](https://user-images.githubusercontent.com/39418469/142498168-faa167ae-73fb-4ec9-af72-74870cd83907.png)
-is the output dataset of PCA and ![image](https://user-images.githubusercontent.com/39418469/142496801-94f17580-51f8-40a3-a8e0-489466e61c07.png) is the first score, we have ![image](https://user-images.githubusercontent.com/39418469/142496909-afc52aa7-a292-457e-ade4-ac3c1208436c.png)
+is the output dataset of PCA and ![image](https://user-images.githubusercontent.com/39418469/142552945-c16b4f40-404b-4ff6-a7af-796f57968bc6.png) is the first score, we have ![image](https://user-images.githubusercontent.com/39418469/142552995-69b2de03-9cd3-4d08-b93e-501f2dd8cd55.png).
 
-Our second score ![image](https://user-images.githubusercontent.com/39418469/142496974-5eaa1e57-4458-4e8b-a1e3-96c7d3c9d592.png)
- is derived from the output of the autoencoder and is the difference of the output ![image](https://user-images.githubusercontent.com/39418469/142497033-87a0b193-c80b-4ef3-9c5a-d4ae89d7553f.png) to the input ![image](https://user-images.githubusercontent.com/39418469/142498183-205b3f69-94d0-40d9-ad46-499e9e98b4fb.png) of the autoencoder: ![image](https://user-images.githubusercontent.com/39418469/142497113-896afffe-2244-4446-9a51-8393d47f24b1.png). Finally, we combine the two scores either by either calculating their harmonic mean or their average to have a final outlier score. The final score is presented below:
+Our second score ![image](https://user-images.githubusercontent.com/39418469/142553050-191a3ebe-4566-40b6-824a-55f03cdba3cf.png)
+ is derived from the output of the autoencoder and is the difference of the output ![image](https://user-images.githubusercontent.com/39418469/142553805-d021653b-008f-4f35-9817-379bd5995f37.png) to the input ![image](https://user-images.githubusercontent.com/39418469/142498183-205b3f69-94d0-40d9-ad46-499e9e98b4fb.png) of the autoencoder: ![image](https://user-images.githubusercontent.com/39418469/142553851-8964b0dc-6731-4001-8f60-239a1698d7dc.png). Finally, we combine the two scores either by either calculating their harmonic mean or their average to have a final outlier score. The histogram final score is presented below:
 
 <img src="https://user-images.githubusercontent.com/39418469/142493148-a4a504f3-2bd3-4bb7-8466-f743bf57c033.png" width="450" height="300">
 
+To have a better understanding of the outlier values and their scores, we plot the top 150 final scores in decreasing order. We notice from the plot below that the final score decreases significanlty after the top 10 records, Hence, we opted to examine 10 records for potential fraud activity. 
 
+<img src="https://user-images.githubusercontent.com/39418469/142554387-98a625c3-bd50-4067-9982-0b11966fdbaf.png" width="450" height="300">
 
+Finally, for a better illustration of the outlier values, we present the scatter plot of normalized Score 1 and Score 2 and point out these 10 values with red:
+
+<img src="https://user-images.githubusercontent.com/39418469/142554549-f40cefdf-ffc1-4f90-9f50-201a1c404a6a.png" width="450" height="300">
+
+### Interpretation of the Results
+In the final step of this project, we analyzed the top ten properties that had the highest fraud scores. We looked at the overall data points for each property to highlight why the property resulted in a high fraud score. Some variables had strangely low or strangely high values - for example, for property or lot size. These could represent a fraudulent record, clerical error, etc. Further investigation and discussion will be needed will real estate experts if these records are indeed fraudulent or not. Also, we looked at the normalized dataset for the top ten records with the highest fraud scores to see which variables had unusual vales.
+
+After examination of those records, we noticed that most were either properties owned by goverment entities or properties that had significanlty low values for propety size (i.e. 1 foot for building depth). Those extreme low values yielded high property values after the standardization step, thus part of next steps would be to determine if those low values were due to administrative errors, due to our potential errors while filling missing values, or are in fact fraudulent values.  
